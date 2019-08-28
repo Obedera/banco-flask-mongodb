@@ -1,11 +1,39 @@
 {%extends 'shared/layout.html'%}
 
 {%block conteudo%}
-    <section>
-        <h1>Nome: {{user.nome}}</h1>
-        <h1>Sobrenome: {{user.sobrenome}}</h1>
-        <h1>Email: {{user.email}}</h1>
-        <h1>Senha: {{user.senha}}</h1>
-        <h1>Saldo: {{user.saldo}}R$</h1>
-    </section>
+        <main>
+            <section>
+                <h2>Nome: {{user.nome}}</h2>
+                <h2>Sobrenome: {{user.sobrenome}}</h2>
+                <h2>Email: {{user.email}}</h2>
+                <h2>Senha: {{user.senha}}</h2>
+                <h2>Saldo: {{user.saldo}}R$</h2>
+            </section>
+            <section>
+                <h2>Depositar</h2>
+                <form action="/" method="post">
+                    <label>Valor</label>
+                    <input type="text" name="valor">
+                    <input type="submit" value="Depositar">
+                </form>
+            </section>
+            <section>
+                <h2>Sacar</h2>
+                <form action="/" method="post">
+                    <label>Valor</label>
+                    <input type="text" name="valor">
+                    <input type="submit" value="Sacar">
+                </form>
+            </section>
+            <section>
+                <h2>Buscar transação</h2>
+                <form action="/" method="post">
+                    <label>Data</label>
+                    <input type="date" name="data">
+                    <label>Valor min</label>
+                    <input type="text" name="valor_min">
+                    <input type="submit" value="Buscar">
+                </form>
+            </section>
+        </main>
 {%endblock%}

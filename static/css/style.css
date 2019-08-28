@@ -1,6 +1,12 @@
 body{
     background-color: blue;
 }
+main{
+    align-items: flex-start;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
 section{
     align-items: center;
     display: flex;
