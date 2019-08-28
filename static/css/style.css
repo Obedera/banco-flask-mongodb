@@ -1,0 +1,21 @@
+body{
+    background-color: blue;
+}
+section{
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+section form{
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+section form input{
+    margin: 5px;
+}
+a{
+    color: red;
+}

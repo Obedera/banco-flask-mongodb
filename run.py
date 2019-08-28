@@ -16,5 +16,10 @@ def index():
 
     return render_template('index.html')
 
+    
+@app.route('/cadastro',methods = ['POST','GET'])
+def cadastrar():
+    return render_template('cadastro.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
