@@ -7,7 +7,7 @@
                 <h2>Sobrenome: {{user.sobrenome}}</h2>
                 <h2>Email: {{user.email}}</h2>
                 <h2>Senha: {{user.senha}}</h2>
-                <h2>Saldo: {{user.saldo}}R$</h2>
+                <h2>Saldo: {{conta.ContaFinal}}R$</h2>
             </section>
             <section>
                 <h2>Depositar</h2>
@@ -28,7 +28,7 @@
             <section>
                 <h2>Buscar transação</h2>
                 <form action="/" method="post">
-                    <label>Data</label>
+                    <label>A partir de</label>
                     <input type="date" name="data">
                     <label>Valor min</label>
                     <input type="text" name="valor_min">
