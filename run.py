@@ -100,6 +100,16 @@ def buscar():
 
         return render_template('user.html',user=user_bd,conta=conta,transacoes=transacoes)
 
+@app.route('/apagar',methods=['POST','GET'])
+def apagar():
+    if request.method == 'POST':
+        user = request.form
+        user_bd = mongo.db.pessoa.find_one({'email':user.get('email'),'senha':user.get('senha')})
+        conta = mongo.db.conta.find_one({'id_user':user_bd['_id']})
+        mongo.db.conta.delete_one({'_id':conta['_id']})
+        mongo.db.pessoa.delete_one({'_id':user_bd['_id']})
+        return render_template('index.html',msg='Conta apagada')
+        
 
 if __name__ == '__main__':
     app.run(debug=True)
