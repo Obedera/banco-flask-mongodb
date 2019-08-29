@@ -11,27 +11,34 @@
             </section>
             <section>
                 <h2>Depositar</h2>
-                <form action="/" method="post">
-                    <label>Valor</label>
-                    <input type="text" name="valor">
-                    <input type="submit" value="Depositar">
+                <h2>{{msg_deposito}}</h2>
+                <form action="/depositar" method="post">
+                    <input type="hidden" name="email" value="{{user.email}}">
+                    <input type="hidden" name="senha" value="{{user.senha}}">
+                    <label>Valor</label>    
+                    <input type="number" name="valor">
+                    <input type="submit" value="Depositar" value="0">
                 </form>
             </section>
             <section>
                 <h2>Sacar</h2>
                 <form action="/" method="post">
                     <label>Valor</label>
-                    <input type="text" name="valor">
-                    <input type="submit" value="Sacar">
+                    <input type="hidden" name="email" value="{{user.email}}">
+                    <input type="hidden" name="senha" value="{{user.senha}}">
+                    <input type="number" name="valor">
+                    <input type="submit" value="Sacar" value="0">
                 </form>
             </section>
             <section>
                 <h2>Buscar transação</h2>
                 <form action="/" method="post">
+                    <input type="hidden" name="email" value="{{user.email}}">
+                    <input type="hidden" name="senha" value="{{user.senha}}">
                     <label>A partir de</label>
                     <input type="date" name="data">
                     <label>Valor min</label>
-                    <input type="text" name="valor_min">
+                    <input type="number" name="valor_min" value="0">
                     <input type="submit" value="Buscar">
                 </form>
             </section>

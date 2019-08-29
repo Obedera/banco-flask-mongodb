@@ -32,15 +32,32 @@ def cadastrar():
             data = f'{datetime.datetime.now().day}/{datetime.datetime.now().month}/{datetime.datetime.now().year}'
             hora = f'{datetime.datetime.now().hour}:{datetime.datetime.now().minute}'
 
-            mongo.db.pessoa.insert({'nome' : user.get('nome'), 'sobrenome' : user.get('sobrenome'), 'email' : user.get('email'), 'senha' : user.get('senha')})
+            user = mongo.db.pessoa.insert({'nome' : user.get('nome'), 'sobrenome' : user.get('sobrenome'), 'email' : user.get('email'), 'senha' : user.get('senha')})
 
-            id_user = mongo.db.pessoa.find_one({'email':user.get('email')})
-
-            mongo.db.conta.insert({'id_user': id_user['_id'], 'data':data, 'hora':hora, 'ContaInicial':0, 'ContaFinal':0, 'Valor':0})
+            mongo.db.conta.insert({'id_user': user, 'data':data, 'hora':hora, 'ContaInicial':0, 'ContaFinal':0, 'valor':0})
             return render_template('index.html',msg='Faça seu login agora')
         else:
             return render_template('cadastro.html',msg='Usuário já cadastrado')
     return render_template('cadastro.html')
+
+@app.route('/depositar', methods = ['POST','GET'])
+def depositar():
+    if request.method == 'POST':
+        user = request.form
+        user_bd = mongo.db.pessoa.find_one({'email':user.get('email'),'senha':user.get('senha')})
+        valor = int(request.form.get('valor'))
+        data = f'{datetime.datetime.now().day}/{datetime.datetime.now().month}/{datetime.datetime.now().year}'
+        hora = f'{datetime.datetime.now().hour}:{datetime.datetime.now().minute}'
+        conta = mongo.db.conta.find_one({'id_user':user_bd['_id']})
+        
+        mongo.db.conta.update_one({'id_user':user_bd['_id']}, {'$set': {'data':data,'hora':hora,'ContaInicial':conta['ContaFinal'],'ContaFinal':(conta['ContaFinal']+valor),'valor':valor}})
+        
+        conta = mongo.db.conta.find_one({'id_user':user_bd['_id']})
+        print(conta)
+        mongo.db.transacoes.insert({'id_conta': conta['_id'], 'data':conta['data'], 'hora':conta['hora'], 'ContaInicial':conta['ContaInicial'], 'ContaFinal':conta['ContaFinal'], 'valor':conta['valor']})
+        
+        return render_template('user.html',user=user_bd,conta=conta,msg_deposito='Dinheiro Depositado')
+
 
 if __name__ == '__main__':
     app.run(debug=True)
