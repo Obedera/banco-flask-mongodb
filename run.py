@@ -29,7 +29,7 @@ def cadastrar():
         user = request.form
         user_bd = mongo.db.pessoa.find_one({'email':user.get('email')})
         if user_bd is None:
-            data = f'{datetime.datetime.now().day}/{datetime.datetime.now().month}/{datetime.datetime.now().year}'
+            data = f'{datetime.datetime.now().date()}'
             hora = f'{datetime.datetime.now().hour}:{datetime.datetime.now().minute}'
 
             user = mongo.db.pessoa.insert({'nome' : user.get('nome'), 'sobrenome' : user.get('sobrenome'), 'email' : user.get('email'), 'senha' : user.get('senha')})
@@ -50,13 +50,13 @@ def depositar():
         if valor<=0:
             return render_template('user.html',user=user_bd,conta=conta,msg_deposito='Valor Inválido')
 
-        data = f'{datetime.datetime.now().day}/{datetime.datetime.now().month}/{datetime.datetime.now().year}'
+        data = f'{datetime.datetime.now().date()}'
         hora = f'{datetime.datetime.now().hour}:{datetime.datetime.now().minute}'
         
         mongo.db.conta.update_one({'id_user':user_bd['_id']}, {'$set': {'data':data,'hora':hora,'ContaInicial':conta['ContaFinal'],'ContaFinal':(conta['ContaFinal']+valor),'valor':valor}})
         
         conta = mongo.db.conta.find_one({'id_user':user_bd['_id']})
-        print(conta)
+
         mongo.db.transacoes.insert({'id_conta': conta['_id'], 'data':conta['data'], 'hora':conta['hora'], 'ContaInicial':conta['ContaInicial'], 'ContaFinal':conta['ContaFinal'], 'valor':conta['valor']})
         
         return render_template('user.html',user=user_bd,conta=conta,msg_deposito='Dinheiro Depositado')
@@ -71,17 +71,34 @@ def sacar():
         if valor<=0:
             return render_template('user.html',user=user_bd,conta=conta,msg_sacar='Valor Inválido')
 
-        data = f'{datetime.datetime.now().day}/{datetime.datetime.now().month}/{datetime.datetime.now().year}'
+        data = f'{datetime.datetime.now().date()}'        
         hora = f'{datetime.datetime.now().hour}:{datetime.datetime.now().minute}'
         
-        mongo.db.conta.update_one({'id_user':user_bd['_id']}, {'$set': {'data':data,'hora':hora,'ContaInicial':conta['ContaFinal'],'ContaFinal':(conta['ContaFinal']-valor),'valor':-valor}})
+        mongo.db.conta.update_one({'id_user':user_bd['_id']}, {'$set': {'data':data,'hora':hora,'ContaInicial':conta['ContaFinal'],'ContaFinal':(conta['ContaFinal']-valor),'valor':valor}})
         
         conta = mongo.db.conta.find_one({'id_user':user_bd['_id']})
-        print(conta)
+
         mongo.db.transacoes.insert({'id_conta': conta['_id'], 'data':conta['data'], 'hora':conta['hora'], 'ContaInicial':conta['ContaInicial'], 'ContaFinal':conta['ContaFinal'], 'valor':conta['valor']})
         
         return render_template('user.html',user=user_bd,conta=conta,msg_sacar='Dinheiro Sacado')
 
+
+@app.route('/buscar', methods=['POST','GET'])
+def buscar():
+    if request.method == 'POST':
+        user = request.form
+        user_bd = mongo.db.pessoa.find_one({'email':user.get('email'),'senha':user.get('senha')})
+        conta = mongo.db.conta.find_one({'id_user':user_bd['_id']})
+        valor = int(request.form.get('valor_min'))
+        data = request.form.get('data')
+        data = ''.join(data.split('-'))
+        transacoes = []
+        for i in mongo.db.transacoes.find({'id_conta':conta['_id']}):
+            databd = ''.join(i['data'].split('-'))
+            if databd>data and i['valor']>valor:
+                transacoes.append(i)
+
+        return render_template('user.html',user=user_bd,conta=conta,transacoes=transacoes)
 
 
 if __name__ == '__main__':

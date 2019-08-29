@@ -25,3 +25,11 @@ section form input{
 a{
     color: red;
 }
+.transacao{
+    border: 1px solid black;
+    border-radius: 8px 8px 8px 8px;
+    margin-bottom: 5px;
+}
+.transacao h3{
+    margin: 0;
+}

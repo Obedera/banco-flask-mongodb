@@ -15,8 +15,8 @@
                 <form action="/depositar" method="post">
                     <input type="hidden" name="email" value="{{user.email}}">
                     <input type="hidden" name="senha" value="{{user.senha}}">   
-                    <input type="number" name="valor">
-                    <input type="submit" value="Depositar" value="0">
+                    <input type="number" name="valor" value="0" required>
+                    <input type="submit" value="Depositar">
                 </form>
             </section>
             <section>
@@ -25,21 +25,30 @@
                 <form action="/sacar" method="post">
                     <input type="hidden" name="email" value="{{user.email}}">
                     <input type="hidden" name="senha" value="{{user.senha}}">
-                    <input type="number" name="valor">
-                    <input type="submit" value="Sacar" value="0">
+                    <input type="number" name="valor" value="0" required>
+                    <input type="submit" value="Sacar">
                 </form>
             </section>
             <section>
                 <h2>Buscar transação</h2>
-                <form action="/" method="post">
+                <form action="/buscar" method="post">
                     <input type="hidden" name="email" value="{{user.email}}">
                     <input type="hidden" name="senha" value="{{user.senha}}">
                     <label>A partir de</label>
-                    <input type="date" name="data">
+                    <input type="date" name="data" required>
                     <label>Valor min</label>
-                    <input type="number" name="valor_min" value="0">
+                    <input type="number" name="valor_min" value="0" required>
                     <input type="submit" value="Buscar">
                 </form>
+                {% for i in transacoes%}
+                    <div class="transacao">
+                        <h3>Data: {{i.data}}</h3>
+                        <h3>Hora: {{i.hora}}</h3>
+                        <h3>Conta Inicial: {{i.ContaInicial}}</h3>
+                        <h3>Valor: {{i.valor}}</h3>
+                        <h3>Conta Final: {{i.ContaFinal}}</h3>
+                    </div>
+                {% endfor %}
             </section>
         </main>
 {%endblock%}
