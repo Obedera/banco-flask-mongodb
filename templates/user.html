@@ -11,19 +11,18 @@
             </section>
             <section>
                 <h2>Depositar</h2>
-                <h2>{{msg_deposito}}</h2>
+                <label>{{msg_deposito}}</label>
                 <form action="/depositar" method="post">
                     <input type="hidden" name="email" value="{{user.email}}">
-                    <input type="hidden" name="senha" value="{{user.senha}}">
-                    <label>Valor</label>    
+                    <input type="hidden" name="senha" value="{{user.senha}}">   
                     <input type="number" name="valor">
                     <input type="submit" value="Depositar" value="0">
                 </form>
             </section>
             <section>
                 <h2>Sacar</h2>
-                <form action="/" method="post">
-                    <label>Valor</label>
+                <label>{{msg_sacar}}</label>
+                <form action="/sacar" method="post">
                     <input type="hidden" name="email" value="{{user.email}}">
                     <input type="hidden" name="senha" value="{{user.senha}}">
                     <input type="number" name="valor">
