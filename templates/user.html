@@ -53,8 +53,10 @@
             <section>
                 <h2>Apagar</h2>
                 <form action="/apagar" method="post">
-                    <input type="text" name="email" value="{{user.email}}" required>
-                    <input type="text" name="senha" value="{{user.senha}}" required>
+                    <label>Email</label>
+                    <input type="text" name="email" value="" required>
+                    <label>Senha</label>
+                    <input type="text" name="senha" value="" required>
                     <input type="submit" value="Apagar">
                 </form>
             </section>
